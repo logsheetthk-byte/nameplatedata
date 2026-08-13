@@ -1,5 +1,5 @@
 const fs = require('fs');
-const file = 'SLD.html';
+const file = 'index.html';
 let content = fs.readFileSync(file, 'utf8');
 
 // The file might contain UTF-16LE characters (the spaces between letters like v i e w e r) 
@@ -17,4 +17,4 @@ content = content.replace(/<script src="viewer\.js"><\/script>/g, '');
 content = content.replace(/<\/body>/, '<script src="viewer.js"></script>\n</body>');
 
 fs.writeFileSync(file, content, 'utf8');
-console.log('Cleaned up SLD.html successfully.');
+console.log('Cleaned up index.html successfully.');

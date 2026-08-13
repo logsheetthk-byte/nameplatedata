@@ -184,19 +184,26 @@
         el.classList.add('text-clickable');
         el.addEventListener('click', (e) => {
             e.stopPropagation();
-            let textName = el.textContent.replace(/\n/g, ' ').trim().replace(/\s+/g, ' ');
-            textName = textName.trim();
-            if (!textName) return;
+            
+            let rawText = el.textContent.trim();
+            if (!rawText) return;
 
-            // Try common extensions dynamically in the parent SLD/images folder or current images folder
-            const imgPaths = [
-                `../SLD/images/${textName}.jpg`,
-                `../SLD/images/${textName}.png`,
-                `../SLD/images/${textName}.jpeg`,
-                `images/${textName}.jpg`,
-                `images/${textName}.png`,
-                `images/${textName}.jpeg`
-            ];
+            // Generate possible image name variations
+            let nameWithSpace = rawText.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+            let nameWithoutSpace = rawText.replace(/\n/g, '').replace(/\s+/g, ' ').trim();
+            let nameNoSpaceBeforeParen = nameWithSpace.replace(/\s+\(/g, '(');
+
+            let variations = [...new Set([nameWithSpace, nameWithoutSpace, nameNoSpaceBeforeParen])];
+
+            const imgPaths = [];
+            variations.forEach(textName => {
+                imgPaths.push(`../SLD/images/${textName}.jpg`);
+                imgPaths.push(`../SLD/images/${textName}.png`);
+                imgPaths.push(`../SLD/images/${textName}.jpeg`);
+                imgPaths.push(`images/${textName}.jpg`);
+                imgPaths.push(`images/${textName}.png`);
+                imgPaths.push(`images/${textName}.jpeg`);
+            });
             
             let currentPathIndex = 0;
 
